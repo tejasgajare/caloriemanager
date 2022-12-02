@@ -1,23 +1,17 @@
 package com.syracuse.caloriemanager
 
-import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.ColorInt
-import androidx.core.widget.doAfterTextChanged
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.progressindicator.CircularProgressIndicatorSpec
-import com.google.android.material.progressindicator.IndeterminateDrawable
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -33,8 +27,8 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
+    ): View {
+        Log.v(TAG, "Login Fragment Loaded")
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         auth = Firebase.auth
         return binding.root
@@ -52,7 +46,7 @@ class LoginFragment : Fragment() {
                 auth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(activity!!) { task ->
                         if (task.isSuccessful) {
-                            Toast.makeText(activity!!, "Successfully Logged In", Toast.LENGTH_LONG).show()
+                            Log.v(TAG, "Successfully Logged In")
                             val trackingActivity = Intent(activity, TrackingActivity::class.java)
                             startActivity(trackingActivity)
                             activity?.finish()
@@ -62,6 +56,7 @@ class LoginFragment : Fragment() {
                         }
                     }
             } catch (e: IllegalArgumentException){
+                Log.e(TAG, "Email or Password cannot be empty")
                 Toast.makeText(activity!!,
                     "Email or Password cannot be empty", Snackbar.LENGTH_LONG).show()
             } catch (e: Exception){
@@ -80,7 +75,7 @@ class LoginFragment : Fragment() {
         binding.editEmail.doOnTextChanged { text, _, _, _ ->
             if(text?.isEmpty() == true){
                 binding.textLayoutEmail.error = "Enter an email"
-            } else if (!Patterns.EMAIL_ADDRESS.matcher(text).matches()) {
+            } else if (!text?.let { Patterns.EMAIL_ADDRESS.matcher(it).matches() }!!) {
                 binding.textLayoutEmail.error = "Enter a valid email"
             }
         }
