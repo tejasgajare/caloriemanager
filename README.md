@@ -1,2 +1,2 @@
-# caloriemanager
-A Calorie Tracking App
+# Calorie Manager
+A Meal Tracking app designed to keep track of your calories and macros to help you acheive you goals
