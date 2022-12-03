@@ -49,4 +49,7 @@
     <string name="title_dairy">Add your Meals</string>
     <string name="title_newsfeed">Newsfeed</string>
     <string name="title_settings">Set Your Goals</string>
+    <string name="meal_breakfast">Breakfast</string>
+    <string name="meal_lunch">Lunch</string>
+    <string name="meal_dinner">Dinner</string>
 </resources>

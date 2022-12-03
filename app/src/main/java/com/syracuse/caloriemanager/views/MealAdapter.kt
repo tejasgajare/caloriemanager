@@ -1,9 +1,7 @@
 package com.syracuse.caloriemanager.views
 
-import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.syracuse.caloriemanager.databinding.MealItemBinding
@@ -21,9 +19,9 @@ class MealAdapter(private val mList: List<MealItem>): RecyclerView.Adapter<Recyc
         when(holder) {
             is ViewHolder -> {
                 with(holder) {
-                    binding.mealItemName.text = mealItem.name
-                    binding.mealItemUnit.text = mealItem.unit
-                    binding.mealItemCalories.text = mealItem.calories.toString()
+                    binding.name.text = mealItem.name
+                    binding.unit.text = mealItem.unit
+                    binding.calories.text = mealItem.calories.toString()
                 }
             }
         }

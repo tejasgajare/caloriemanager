@@ -80,7 +80,8 @@
                 android:id="@+id/breakfast_meals"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:layout="@layout/meal_item"/>
+                tools:layout="@layout/meal_item"
+                tools:listitem="@layout/meal_item"/>
 
             <!--Action Buttons-->
 
