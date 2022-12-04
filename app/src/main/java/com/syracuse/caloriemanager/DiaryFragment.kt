@@ -9,12 +9,16 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.syracuse.caloriemanager.databinding.FragmentDiaryBinding
 import com.syracuse.caloriemanager.models.MealItem
 import com.syracuse.caloriemanager.views.MealAdapter
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class DiaryFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickListener {
     private var _binding: FragmentDiaryBinding? = null
@@ -56,7 +60,7 @@ class DiaryFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickLis
         val sdf = SimpleDateFormat("yyyy-MM-dd")
         val currentDate = sdf.format(Date())
 
-        val breakfastQuery = FirebaseDatabase.getInstance()
+        val breakfastMealsQuery = FirebaseDatabase.getInstance()
             .reference
             .child("meals")
             .child(user?.uid.toString())
@@ -64,7 +68,7 @@ class DiaryFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickLis
             .child("breakfast")
             .limitToFirst(10)
 
-        val lunchQuery = FirebaseDatabase.getInstance()
+        val lunchMealsQuery = FirebaseDatabase.getInstance()
             .reference
             .child("meals")
             .child(user?.uid.toString())
@@ -72,7 +76,7 @@ class DiaryFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickLis
             .child("lunch")
             .limitToFirst(10)
 
-        val dinnerQuery = FirebaseDatabase.getInstance()
+        val dinnerMealsQuery = FirebaseDatabase.getInstance()
             .reference
             .child("meals")
             .child(user?.uid.toString())
@@ -80,13 +84,89 @@ class DiaryFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickLis
             .child("dinner")
             .limitToFirst(10)
 
-        mMealBreakfastAdapter = MealAdapter(MealItem::class.java, breakfastQuery)
+
+        breakfastMealsQuery
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    var tCalories = 0L
+                    var tFats = 0L
+                    var tCarbohydrates = 0L
+                    var tProteins = 0L
+                    for (data in dataSnapshot.children) {
+                        val calories: Long = data.child("calories").getValue(Long::class.java)!!
+                        val fats: Long = data.child("fats").getValue(Long::class.java)!!
+                        val carbohydrates: Long = data.child("carbohydrates").getValue(Long::class.java)!!
+                        val proteins: Long = data.child("proteins").getValue(Long::class.java)!!
+
+                        tCalories += calories
+                        tFats += fats
+                        tCarbohydrates += carbohydrates
+                        tProteins += proteins
+                    }
+                    binding.breakfastCalories.text = tCalories.toString()
+                    binding.breakfastDescription.text = "Carbs $tCarbohydrates • Fats $tFats • Protein $tProteins"
+                }
+
+                override fun onCancelled(error: DatabaseError) {}
+            })
+
+        lunchMealsQuery
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    var tCalories = 0L
+                    var tFats = 0L
+                    var tCarbohydrates = 0L
+                    var tProteins = 0L
+                    for (data in dataSnapshot.children) {
+                        val calories: Long = data.child("calories").getValue(Long::class.java)!!
+                        val fats: Long = data.child("fats").getValue(Long::class.java)!!
+                        val carbohydrates: Long = data.child("carbohydrates").getValue(Long::class.java)!!
+                        val proteins: Long = data.child("proteins").getValue(Long::class.java)!!
+
+                        tCalories += calories
+                        tFats += fats
+                        tCarbohydrates += carbohydrates
+                        tProteins += proteins
+                    }
+                    binding.lunchCalories.text = tCalories.toString()
+                    binding.lunchDescription.text = "Carbs $tCarbohydrates • Fats $tFats • Protein $tProteins"
+                }
+
+                override fun onCancelled(error: DatabaseError) {}
+            })
+
+        dinnerMealsQuery
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    var tCalories = 0L
+                    var tFats = 0L
+                    var tCarbohydrates = 0L
+                    var tProteins = 0L
+                    for (data in dataSnapshot.children) {
+                        val calories: Long = data.child("calories").getValue(Long::class.java)!!
+                        val fats: Long = data.child("fats").getValue(Long::class.java)!!
+                        val carbohydrates: Long = data.child("carbohydrates").getValue(Long::class.java)!!
+                        val proteins: Long = data.child("proteins").getValue(Long::class.java)!!
+
+                        tCalories += calories
+                        tFats += fats
+                        tCarbohydrates += carbohydrates
+                        tProteins += proteins
+                    }
+                    binding.dinnerCalories.text = tCalories.toString()
+                    binding.dinnerDescription.text = "Carbs $tCarbohydrates • Fats $tFats • Protein $tProteins"
+                }
+
+                override fun onCancelled(error: DatabaseError) {}
+            })
+
+        mMealBreakfastAdapter = MealAdapter(MealItem::class.java, breakfastMealsQuery)
         mMealBreakfastAdapter.setItemClickListener(this)
 
-        mMealLunchAdapter = MealAdapter(MealItem::class.java, lunchQuery)
+        mMealLunchAdapter = MealAdapter(MealItem::class.java, lunchMealsQuery)
         mMealLunchAdapter.setItemClickListener(this)
 
-        mMealDinnerAdapter = MealAdapter(MealItem::class.java, dinnerQuery)
+        mMealDinnerAdapter = MealAdapter(MealItem::class.java, dinnerMealsQuery)
         mMealDinnerAdapter.setItemClickListener(this)
 
         binding.breakfastMeals.adapter = mMealBreakfastAdapter

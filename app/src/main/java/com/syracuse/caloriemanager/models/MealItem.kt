@@ -9,6 +9,7 @@ class MealItem: Serializable {
     val unit: String = ""
     val count: Int = 0
     val calories: Int = 0
+    val proteins: Int = 0
     val fats: Int = 0
     val carbohydrates: Int = 0
 }
