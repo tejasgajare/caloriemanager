@@ -1,7 +1,10 @@
 package com.syracuse.caloriemanager
 
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.method.TextKeyListener.clear
 import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
@@ -14,15 +17,15 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.FirebaseUser
 import com.syracuse.caloriemanager.databinding.FragmentLoginBinding
+
 
 class LoginFragment : Fragment() {
 
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private lateinit var auth: FirebaseAuth
+    private lateinit var mAuth: FirebaseAuth
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,12 +33,13 @@ class LoginFragment : Fragment() {
     ): View {
         Log.v(TAG, "Login Fragment Loaded")
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
-        auth = Firebase.auth
+        mAuth = FirebaseAuth.getInstance()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val loginButton: MaterialButton = binding.btnLogin as MaterialButton
         loginButton.setOnClickListener{
 
@@ -43,7 +47,7 @@ class LoginFragment : Fragment() {
             val password = binding.editPassword.text.toString()
 
             try {
-                auth.signInWithEmailAndPassword(email, password)
+                mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(activity!!) { task ->
                         if (task.isSuccessful) {
                             Log.v(TAG, "Successfully Logged In")
