@@ -26,6 +26,186 @@
                         "fats": 43,
                         "carbohydrates": 12,
                         "count": 1
+                    },
+                    {
+                        "name": "Tuna Salad",
+                        "unit": "Bowl",
+                        "calories": 123,
+                        "fats": 43,
+                        "carbohydrates": 12,
+                        "count": 1
+                    }
+                ],
+                "lunch": [
+                    {
+                        "name": "Chicken Sandwich",
+                        "unit": "Breads",
+                        "calories": 210,
+                        "fats": 23,
+                        "carbohydrates": 13,
+                        "count": 2
+                    },
+                    {
+                        "name": "Mango Smoothie",
+                        "unit": "Glass",
+                        "calories": 123,
+                        "fats": 43,
+                        "carbohydrates": 12,
+                        "count": 1
+                    },
+                    {
+                        "name": "Veggie Burger",
+                        "unit": "Breads",
+                        "calories": 123,
+                        "fats": 43,
+                        "carbohydrates": 12,
+                        "count": 1
+                    },
+                    {
+                        "name": "Tuna Salad",
+                        "unit": "Bowl",
+                        "calories": 123,
+                        "fats": 43,
+                        "carbohydrates": 12,
+                        "count": 1
+                    }
+                ],
+                "dinner": [
+                    {
+                        "name": "Chicken Sandwich",
+                        "unit": "Breads",
+                        "calories": 210,
+                        "fats": 23,
+                        "carbohydrates": 13,
+                        "count": 2
+                    },
+                    {
+                        "name": "Mango Smoothie",
+                        "unit": "Glass",
+                        "calories": 123,
+                        "fats": 43,
+                        "carbohydrates": 12,
+                        "count": 1
+                    },
+                    {
+                        "name": "Veggie Burger",
+                        "unit": "Breads",
+                        "calories": 123,
+                        "fats": 43,
+                        "carbohydrates": 12,
+                        "count": 1
+                    },
+                    {
+                        "name": "Tuna Salad",
+                        "unit": "Bowl",
+                        "calories": 123,
+                        "fats": 43,
+                        "carbohydrates": 12,
+                        "count": 1
+                    }
+                ]
+            },
+            "2022-12-04": {
+                "breakfast": [
+                    {
+                        "name": "Chicken Sandwich",
+                        "unit": "Breads",
+                        "calories": 210,
+                        "fats": 23,
+                        "carbohydrates": 13,
+                        "count": 2
+                    },
+                    {
+                        "name": "Mango Smoothie",
+                        "unit": "Glass",
+                        "calories": 123,
+                        "fats": 43,
+                        "carbohydrates": 12,
+                        "count": 1
+                    },
+                    {
+                        "name": "Veggie Burger",
+                        "unit": "Breads",
+                        "calories": 123,
+                        "fats": 43,
+                        "carbohydrates": 12,
+                        "count": 1
+                    },
+                    {
+                        "name": "Tuna Salad",
+                        "unit": "Bowl",
+                        "calories": 123,
+                        "fats": 43,
+                        "carbohydrates": 12,
+                        "count": 1
+                    }
+                ],
+                "lunch": [
+                    {
+                        "name": "Chicken Sandwich",
+                        "unit": "Breads",
+                        "calories": 210,
+                        "fats": 23,
+                        "carbohydrates": 13,
+                        "count": 2
+                    },
+                    {
+                        "name": "Mango Smoothie",
+                        "unit": "Glass",
+                        "calories": 123,
+                        "fats": 43,
+                        "carbohydrates": 12,
+                        "count": 1
+                    },
+                    {
+                        "name": "Veggie Burger",
+                        "unit": "Breads",
+                        "calories": 123,
+                        "fats": 43,
+                        "carbohydrates": 12,
+                        "count": 1
+                    },
+                    {
+                        "name": "Tuna Salad",
+                        "unit": "Bowl",
+                        "calories": 123,
+                        "fats": 43,
+                        "carbohydrates": 12,
+                        "count": 1
+                    }
+                ],
+                "dinner": [
+                    {
+                        "name": "Chicken Sandwich",
+                        "unit": "Breads",
+                        "calories": 210,
+                        "fats": 23,
+                        "carbohydrates": 13,
+                        "count": 2
+                    },
+                    {
+                        "name": "Mango Smoothie",
+                        "unit": "Glass",
+                        "calories": 123,
+                        "fats": 43,
+                        "carbohydrates": 12,
+                        "count": 1
+                    },
+                    {
+                        "name": "Veggie Burger",
+                        "unit": "Breads",
+                        "calories": 123,
+                        "fats": 43,
+                        "carbohydrates": 12,
+                        "count": 1
+                    },
+                    {
+                        "name": "Tuna Salad",
+                        "unit": "Bowl",
+                        "calories": 123,
+                        "fats": 43,
+                        "carbohydrates": 12,
+                        "count": 1
                     }
                 ]
             }

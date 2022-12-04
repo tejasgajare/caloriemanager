@@ -10,29 +10,19 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.gson.Gson
 import com.syracuse.caloriemanager.databinding.FragmentDairyBinding
-import com.syracuse.caloriemanager.models.FoodItem
 import com.syracuse.caloriemanager.models.MealItem
 import com.syracuse.caloriemanager.views.MealAdapter
-import org.json.JSONObject
 import java.text.SimpleDateFormat
 import java.util.*
-
 
 class DairyFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickListener {
     private var _binding: FragmentDairyBinding? = null
     private val binding get() = _binding!!
-    private lateinit var mMealAdapter: MealAdapter
+    private lateinit var mMealBreakfastAdapter: MealAdapter
+    private lateinit var mMealLunchAdapter: MealAdapter
+    private lateinit var mMealDinnerAdapter: MealAdapter
     private lateinit var firebaseAuth: FirebaseAuth
-
-    val query = FirebaseDatabase.getInstance()
-        .reference
-        .child("meals")
-        .child("zO69BhHjHPXfKvjpzLogYTNNnHE3")
-        .child("2022-12-03")
-        .child("breakfast")
-        .limitToFirst(10)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,29 +35,65 @@ class DairyFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickLis
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDairyBinding.inflate(inflater, container, false)
-        binding.breakfastMeals.layoutManager = LinearLayoutManager(activity)
-        binding.addItemBreakfast.setOnClickListener(this)
-        binding.removeItemBreakfast.setOnClickListener(this)
+        return binding.root
+    }
 
-        val breakfast = ArrayList<MealItem>()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.breakfastMeals.layoutManager = WrapContentLinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false)
+        binding.lunchMeals.layoutManager = WrapContentLinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false)
+        binding.dinnerMeals.layoutManager = WrapContentLinearLayoutManager(activity, LinearLayoutManager.VERTICAL,false)
+
+        binding.addItemBreakfast.setOnClickListener(this)
+        binding.addItemLunch.setOnClickListener(this)
+        binding.addItemDinner.setOnClickListener(this)
+
+        binding.removeItemBreakfast.setOnClickListener(this)
+        binding.removeItemLunch.setOnClickListener(this)
+        binding.removeItemDinner.setOnClickListener(this)
+
         val user = firebaseAuth.currentUser
         val sdf = SimpleDateFormat("yyyy-MM-dd")
         val currentDate = sdf.format(Date())
 
+        val breakfastQuery = FirebaseDatabase.getInstance()
+            .reference
+            .child("meals")
+            .child(user?.uid.toString())
+            .child(currentDate)
+            .child("breakfast")
+            .limitToFirst(10)
 
+        val lunchQuery = FirebaseDatabase.getInstance()
+            .reference
+            .child("meals")
+            .child(user?.uid.toString())
+            .child(currentDate)
+            .child("lunch")
+            .limitToFirst(10)
 
-//        breakfast.add(MealItem("Bread", "5 Slices", 5, 213, 43, 41))
-//        breakfast.add(MealItem("Peanut Butter", "30 Grams", 1, 213, 34, 32))
-//
-//        for(meal in breakfast){
-//            Log.e(TAG, "Meal : ${meal.name}  ${meal.unit}  ${meal.calories}")
-//        }
+        val dinnerQuery = FirebaseDatabase.getInstance()
+            .reference
+            .child("meals")
+            .child(user?.uid.toString())
+            .child(currentDate)
+            .child("dinner")
+            .limitToFirst(10)
 
-        mMealAdapter = MealAdapter(MealItem::class.java, query)
-        mMealAdapter.setItemClickListener(this)
-        binding.breakfastMeals.adapter = mMealAdapter
-        return binding.root
+        mMealBreakfastAdapter = MealAdapter(MealItem::class.java, breakfastQuery)
+        mMealBreakfastAdapter.setItemClickListener(this)
+
+        mMealLunchAdapter = MealAdapter(MealItem::class.java, lunchQuery)
+        mMealLunchAdapter.setItemClickListener(this)
+
+        mMealDinnerAdapter = MealAdapter(MealItem::class.java, dinnerQuery)
+        mMealDinnerAdapter.setItemClickListener(this)
+
+        binding.breakfastMeals.adapter = mMealBreakfastAdapter
+        binding.lunchMeals.adapter = mMealLunchAdapter
+        binding.dinnerMeals.adapter = mMealDinnerAdapter
     }
+
 
     override fun onClick(view: View) {
         when(view.id){
@@ -77,12 +103,42 @@ class DairyFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickLis
                 this.startActivity(intent)
             }
             R.id.remove_item_breakfast->{
-                if(mMealAdapter.getRemoveState()){
+                if(mMealBreakfastAdapter.getRemoveState()){
                     binding.removeItemBreakfast.text = "Remove"
-                    mMealAdapter.setRemoveState(false)
+                    mMealBreakfastAdapter.setRemoveState(false)
                 } else {
                     binding.removeItemBreakfast.text = "Cancel"
-                    mMealAdapter.setRemoveState(true)
+                    mMealBreakfastAdapter.setRemoveState(true)
+                }
+            }
+
+            R.id.add_item_lunch->{
+                val intent = Intent(activity, FoodActivity::class.java)
+                intent.putExtra("type",resources.getString(R.string.meal_lunch));
+                this.startActivity(intent)
+            }
+            R.id.remove_item_lunch-> {
+                if(mMealLunchAdapter.getRemoveState()){
+                    binding.removeItemLunch.text = "Remove"
+                    mMealLunchAdapter.setRemoveState(false)
+                } else {
+                    binding.removeItemLunch.text = "Cancel"
+                    mMealLunchAdapter.setRemoveState(true)
+                }
+            }
+
+            R.id.add_item_dinner->{
+                val intent = Intent(activity, FoodActivity::class.java)
+                intent.putExtra("type",resources.getString(R.string.meal_dinner));
+                this.startActivity(intent)
+            }
+            R.id.remove_item_dinner-> {
+                if(mMealDinnerAdapter.getRemoveState()){
+                    binding.removeItemDinner.text = "Remove"
+                    mMealDinnerAdapter.setRemoveState(false)
+                } else {
+                    binding.removeItemDinner.text = "Cancel"
+                    mMealDinnerAdapter.setRemoveState(true)
                 }
             }
         }
@@ -90,18 +146,28 @@ class DairyFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickLis
 
     override fun onStart() {
         super.onStart()
-        mMealAdapter.startListening()
+        mMealBreakfastAdapter.startListening()
+        mMealLunchAdapter.startListening()
+        mMealDinnerAdapter.startListening()
     }
 
     override fun onStop() {
         super.onStop()
-        mMealAdapter.stopListening()
+        mMealBreakfastAdapter.stopListening()
+        mMealLunchAdapter.stopListening()
+        mMealDinnerAdapter.stopListening()
     }
 
     override fun onMealItemRemove(view: View) {
-        binding.removeItemBreakfast.text = "Remove"
+        Log.e(MealAdapter.TAG, "Item Removed")
         view.visibility = View.GONE
-        mMealAdapter.setRemoveState(false)
+        binding.removeItemBreakfast.text = "Remove"
+        binding.removeItemLunch.text = "Remove"
+        binding.removeItemDinner.text = "Remove"
+
+        mMealBreakfastAdapter.setRemoveState(false)
+        mMealLunchAdapter.setRemoveState(false)
+        mMealDinnerAdapter.setRemoveState(false)
     }
 
     companion object {
