@@ -10,18 +10,17 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.firebase.auth.FirebaseAuth
 import com.syracuse.caloriemanager.databinding.ActivityTrackingBinding
 
-
 class TrackingActivity : AppCompatActivity()  {
     lateinit var binding: ActivityTrackingBinding
     private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
         firebaseAuth = FirebaseAuth.getInstance()
         binding = ActivityTrackingBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setSupportActionBar(binding.toolbar)
         this.title=""
         val navigation = binding.bottomNavigation

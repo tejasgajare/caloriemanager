@@ -2,13 +2,13 @@ package com.syracuse.caloriemanager
 
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.syracuse.caloriemanager.databinding.ActivityFoodBinding
 import com.syracuse.caloriemanager.models.FoodItem
-import com.syracuse.caloriemanager.models.MealItem
 import com.syracuse.caloriemanager.views.FoodAdapter
-import androidx.appcompat.widget.SearchView
 
 class FoodActivity : AppCompatActivity() {
     private lateinit var binding: ActivityFoodBinding

@@ -70,6 +70,6 @@ class FoodAdapter(private val mList: ArrayList<FoodItem>): RecyclerView.Adapter<
     class ViewHolder(val binding: FoodItemBinding) : RecyclerView.ViewHolder(binding.root) {}
 
     companion object {
-        @JvmStatic val TAG = "MealAdapter"
+        @JvmStatic val TAG = "FoodAdapter"
     }
 }

@@ -1,0 +1,34 @@
+{
+    "meals" : {
+        "zO69BhHjHPXfKvjpzLogYTNNnHE3" : {
+            "2022-12-03": {
+                "breakfast": [
+                    {
+                        "name": "Chicken Sandwich",
+                        "unit": "Breads",
+                        "calories": 210,
+                        "fats": 23,
+                        "carbohydrates": 13,
+                        "count": 2
+                    },
+                    {
+                        "name": "Mango Smoothie",
+                        "unit": "Glass",
+                        "calories": 123,
+                        "fats": 43,
+                        "carbohydrates": 12,
+                        "count": 1
+                    },
+                    {
+                        "name": "Veggie Burger",
+                        "unit": "Breads",
+                        "calories": 123,
+                        "fats": 43,
+                        "carbohydrates": 12,
+                        "count": 1
+                    }
+                ]
+            }
+        }
+    }
+}
