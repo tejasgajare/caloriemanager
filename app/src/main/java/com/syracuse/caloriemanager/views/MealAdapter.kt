@@ -16,7 +16,7 @@ class MealAdapter(var modelClass: Class<MealItem>, var query: Query) :
         FirebaseRecyclerOptions.Builder<MealItem>()
             .setQuery(query, modelClass)
             .build()
-    ) {
+    ){
 
     private var listener: ItemClickListener? = null
     private var isRemoveActive: Boolean = false
@@ -48,6 +48,7 @@ class MealAdapter(var modelClass: Class<MealItem>, var query: Query) :
 
     fun setRemoveState(state: Boolean){
         this.isRemoveActive = state
+        notifyDataSetChanged()
     }
 
     fun getRemoveState(): Boolean {
