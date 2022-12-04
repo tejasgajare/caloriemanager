@@ -34,11 +34,11 @@ class TrackingActivity : AppCompatActivity()  {
                     transaction.commit()
                     return@setOnItemSelectedListener true
                 }
-                R.id.page_dairy -> {
-                    val fragment = DairyFragment()
-                    binding.title.text = getString(R.string.title_dairy)
+                R.id.page_diary -> {
+                    val fragment = DiaryFragment()
+                    binding.title.text = getString(R.string.title_diary)
                     val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-                    transaction.replace(binding.fragmentHost.id, fragment, FRAGMENT_DAIRY)
+                    transaction.replace(binding.fragmentHost.id, fragment, FRAGMENT_DIARY)
                     transaction.commit()
                     return@setOnItemSelectedListener true
                 }
@@ -68,6 +68,6 @@ class TrackingActivity : AppCompatActivity()  {
     companion object {
         @JvmStatic val TAG = "TrackingActivity"
         @JvmStatic val FRAGMENT_DASHBOARD = "FRAGMENT_DASHBOARD"
-        @JvmStatic val FRAGMENT_DAIRY = "FRAGMENT_DAIRY"
+        @JvmStatic val FRAGMENT_DIARY = "FRAGMENT_DIARY"
     }
 }

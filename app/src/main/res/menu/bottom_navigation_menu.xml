@@ -11,10 +11,10 @@
         android:title="Dashboard" />
 
     <item
-        android:id="@+id/page_dairy"
+        android:id="@+id/page_diary"
         android:icon="@drawable/ic_baseline_post_add_24"
         app:showAsAction="always"
-        android:title="Dairy" />
+        android:title="Diary" />
 
     <item
         android:id="@+id/page_newsfeed"

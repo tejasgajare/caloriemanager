@@ -18,6 +18,6 @@ class WrapContentLinearLayoutManager(context: Context?, orientation: Int, revers
         }
     }
     companion object {
-        @JvmStatic val TAG = "DairyFragment"
+        @JvmStatic val TAG = "DiaryFragment"
     }
 }

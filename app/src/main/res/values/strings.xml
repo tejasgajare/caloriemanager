@@ -51,7 +51,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_dashboard">Track Your Progress</string>
-    <string name="title_dairy">Add your Meals</string>
+    <string name="title_diary">Add your Meals</string>
     <string name="title_newsfeed">Newsfeed</string>
     <string name="title_settings">Set Your Goals</string>
     <string name="meal_breakfast">Breakfast</string>

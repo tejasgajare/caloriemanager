@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.database.Query
-import com.syracuse.caloriemanager.DairyFragment
+import com.syracuse.caloriemanager.DiaryFragment
 import com.syracuse.caloriemanager.databinding.MealItemBinding
 import com.syracuse.caloriemanager.models.MealItem
 
@@ -25,7 +25,7 @@ class MealAdapter(var modelClass: Class<MealItem>, var query: Query) :
         fun onMealItemRemove(view: View)
     }
 
-    fun setItemClickListener (listener: DairyFragment){
+    fun setItemClickListener (listener: DiaryFragment){
         this.listener = listener
     }
 

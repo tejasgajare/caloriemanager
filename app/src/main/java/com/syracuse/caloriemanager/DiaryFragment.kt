@@ -10,14 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.syracuse.caloriemanager.databinding.FragmentDairyBinding
+import com.syracuse.caloriemanager.databinding.FragmentDiaryBinding
 import com.syracuse.caloriemanager.models.MealItem
 import com.syracuse.caloriemanager.views.MealAdapter
 import java.text.SimpleDateFormat
 import java.util.*
 
-class DairyFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickListener {
-    private var _binding: FragmentDairyBinding? = null
+class DiaryFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickListener {
+    private var _binding: FragmentDiaryBinding? = null
     private val binding get() = _binding!!
     private lateinit var mMealBreakfastAdapter: MealAdapter
     private lateinit var mMealLunchAdapter: MealAdapter
@@ -27,14 +27,14 @@ class DairyFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickLis
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firebaseAuth = FirebaseAuth.getInstance()
-        Log.v(TAG, "Dairy Fragment Loaded")
+        Log.v(TAG, "Diary Fragment Loaded")
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentDairyBinding.inflate(inflater, container, false)
+        _binding = FragmentDiaryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -171,7 +171,7 @@ class DairyFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickLis
     }
 
     companion object {
-        @JvmStatic val TAG = "DairyFragment"
+        @JvmStatic val TAG = "DiaryFragment"
     }
 
 
