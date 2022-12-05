@@ -55,6 +55,7 @@ dependencies {
     implementation 'com.airbnb.android:lottie:5.2.0'
     implementation 'com.google.firebase:firebase-database:20.1.0'
     implementation 'com.firebaseui:firebase-ui-database:8.0.2'
+    implementation 'jp.wasabeef:recyclerview-animators:4.0.2'
     implementation 'com.google.firebase:firebase-core:21.1.1'
     implementation 'com.firebase:firebase-client-android:2.4.0'
     testImplementation 'junit:junit:4.13.2'

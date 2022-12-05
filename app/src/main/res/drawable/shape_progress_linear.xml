@@ -18,7 +18,7 @@
                     android:radius="10dp"
                     />
                 <size android:height="10dp"/>
-                <solid android:color="#37474F"/>
+                <solid android:color="@color/linear_progress_theme"/>
             </shape>
         </scale>
     </item>

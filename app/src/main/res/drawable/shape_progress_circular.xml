@@ -9,7 +9,6 @@
             <solid android:color="@color/cardview_light_background"/>
         </shape>
     </item>
-
     <item android:id="@android:id/progress">
         <rotate
             android:fromDegrees="270"
@@ -20,11 +19,11 @@
                 android:shape="ring"
                 android:thickness="10dp"
                 android:useLevel="true">
-
-                <solid android:color="#E91E63"/>
-
+                <corners
+                    android:radius="10dp"
+                    />
+                <solid android:color="@color/circular_progress_theme"/>
             </shape>
         </rotate>
-
     </item>
 </layer-list>

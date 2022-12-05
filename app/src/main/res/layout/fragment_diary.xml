@@ -19,9 +19,9 @@
 
 
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:scrollbars="none"
@@ -125,7 +125,6 @@
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/meal_lunch"
                 style="?attr/materialCardViewElevatedStyle"
@@ -219,7 +218,6 @@
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/meal_dinner"
                 style="?attr/materialCardViewElevatedStyle"
@@ -236,7 +234,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:orientation="horizontal">
 
                         <LinearLayout
@@ -264,7 +262,7 @@
                         <TextView
                             android:id="@+id/dinner_calories"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="2"
                             android:gravity="end"
                             android:text="539"
@@ -283,8 +281,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/dinner_meals"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        tools:layout="@layout/meal_item"
+                        android:layout_height="match_parent"
                         tools:listitem="@layout/meal_item"/>
 
                     <!--Action Buttons-->
@@ -315,8 +312,10 @@
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
+
+
         </LinearLayout>
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
