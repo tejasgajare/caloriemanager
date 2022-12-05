@@ -2,6 +2,7 @@ package com.syracuse.caloriemanager
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import com.google.firebase.auth.FirebaseAuth

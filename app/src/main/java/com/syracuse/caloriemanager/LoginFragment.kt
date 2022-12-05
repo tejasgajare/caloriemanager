@@ -48,23 +48,23 @@ class LoginFragment : Fragment() {
 
             try {
                 mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(activity!!) { task ->
+                    .addOnCompleteListener(requireActivity()) { task ->
                         if (task.isSuccessful) {
                             Log.v(TAG, "Successfully Logged In")
                             val trackingActivity = Intent(activity, TrackingActivity::class.java)
                             startActivity(trackingActivity)
                             activity?.finish()
                         } else {
-                            Toast.makeText(activity!!,
-                                task.exception.toString(), Snackbar.LENGTH_LONG).show()
+                            Toast.makeText(requireActivity(),
+                                task.exception.toString(), Toast.LENGTH_SHORT).show()
                         }
                     }
             } catch (e: IllegalArgumentException){
                 Log.e(TAG, "Email or Password cannot be empty")
-                Toast.makeText(activity!!,
-                    "Email or Password cannot be empty", Snackbar.LENGTH_LONG).show()
+                Toast.makeText(requireActivity(),
+                    "Email or Password cannot be empty", Toast.LENGTH_SHORT).show()
             } catch (e: Exception){
-                Toast.makeText(activity!!, e.message.toString(), Snackbar.LENGTH_LONG).show()
+                Toast.makeText(requireActivity(), e.message.toString(), Toast.LENGTH_SHORT).show()
             }
         }
 

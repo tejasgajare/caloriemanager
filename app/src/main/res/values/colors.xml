@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
+    <color name="circular_progress_theme">#2196F3</color>
+    <color name="linear_progress_theme">#454545</color>
     <color name="seed">#43A047</color>
     <color name="md_theme_light_primary">#006E1C</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>

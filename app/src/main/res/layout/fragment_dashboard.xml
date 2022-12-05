@@ -41,7 +41,7 @@
                     android:layout_height="150dp">
 
                     <ProgressBar
-                        android:id="@+id/progress"
+                        android:id="@+id/consumed_calories"
                         android:layout_width="200dp"
                         android:layout_height="match_parent"
                         android:indeterminateOnly="false"
@@ -51,27 +51,27 @@
                         android:id="@+id/remaining_calories"
                         android:layout_width="10dp"
                         android:layout_height="10dp"
-                        android:layout_alignLeft="@id/progress"
-                        android:layout_alignTop="@id/progress"
-                        android:layout_alignRight="@id/progress"
-                        android:layout_alignBottom="@id/progress"
+                        android:layout_alignLeft="@id/consumed_calories"
+                        android:layout_alignTop="@id/consumed_calories"
+                        android:layout_alignRight="@id/consumed_calories"
+                        android:layout_alignBottom="@id/consumed_calories"
                         android:layout_marginBottom="20dp"
                         android:background="@android:color/transparent"
                         android:gravity="center"
                         android:text="103"
                         android:textAlignment="center"
-                        android:textColor="#E91E63"
+                        android:textColor="@color/circular_progress_theme"
                         android:textSize="24sp"
                         android:textStyle="bold" />
 
                     <TextView
                         android:layout_width="10dp"
                         android:layout_height="10dp"
-                        android:layout_alignLeft="@id/progress"
-                        android:layout_alignTop="@id/progress"
-                        android:layout_alignRight="@id/progress"
-                        android:layout_alignBottom="@id/progress"
-                        android:layout_marginTop="30dp"
+                        android:layout_alignLeft="@id/consumed_calories"
+                        android:layout_alignTop="@id/consumed_calories"
+                        android:layout_alignRight="@id/consumed_calories"
+                        android:layout_alignBottom="@id/consumed_calories"
+                        android:layout_marginTop="20dp"
                         android:background="@android:color/transparent"
                         android:gravity="center"
                         android:text="Remaining"
@@ -256,6 +256,14 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/today_carbohydrates"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="80/256 Left"
+                    android:textAlignment="textEnd"
+                    android:textSize="12sp" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -290,12 +298,21 @@
 
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/today_fats"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="80/256 Left"
+                    android:textAlignment="textEnd"
+                    android:textSize="12sp" />
+
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -323,6 +340,14 @@
                         android:progressDrawable="@drawable/shape_progress_linear" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/today_protein"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="80/256 Left"
+                    android:textAlignment="textEnd"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
