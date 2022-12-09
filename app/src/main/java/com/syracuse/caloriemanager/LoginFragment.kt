@@ -40,8 +40,7 @@ class LoginFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val loginButton: MaterialButton = binding.btnLogin as MaterialButton
-        loginButton.setOnClickListener{
+        binding.btnLogin.setOnClickListener{
 
             val email = binding.editEmail.text.toString()
             val password = binding.editPassword.text.toString()
@@ -81,6 +80,8 @@ class LoginFragment : Fragment() {
                 binding.textLayoutEmail.error = "Enter an email"
             } else if (!text?.let { Patterns.EMAIL_ADDRESS.matcher(it).matches() }!!) {
                 binding.textLayoutEmail.error = "Enter a valid email"
+            } else {
+                binding.textLayoutEmail.error = null
             }
         }
 
@@ -89,6 +90,8 @@ class LoginFragment : Fragment() {
                 binding.textLayoutPassword.error = "Enter an password"
             } else if (text?.length!! < 8) {
                 binding.textLayoutPassword.error = "Password should be at least 8 characters"
+            } else {
+                binding.textLayoutPassword.error = null
             }
         }
     }

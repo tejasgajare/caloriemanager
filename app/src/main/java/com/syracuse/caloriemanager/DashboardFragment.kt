@@ -69,22 +69,21 @@ class DashboardFragment : Fragment() {
             .child(fUser.uid)
             .addValueEventListener(object: ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val mUser = snapshot.getValue(User::class.java)
+                    var mUser = User()
 
-                    Log.wtf(TAG," Mapped User(${fUser.uid}) successfully: ${mUser?.firstName}")
-                    val goalWeight = snapshot.child("goalWeight").getValue(Double::class.java)!!
-                    val currentWeight = snapshot.child("currentWeight").getValue(Double::class.java)!!
-                    val height = snapshot.child("height").getValue(Double::class.java)!!
-                    val age = snapshot.child("age").getValue(Double::class.java)!!
-                    val activityLevel = snapshot.child("activityLevel").getValue(String::class.java)!!
+                    try {
+                        mUser = snapshot.getValue(User::class.java)!!
+                    } catch (error: NullPointerException) {
+                        Log.wtf(TAG,"User has not completed On-boarding, redirecting to settings page ")
+                    }
 
-                    val bmr = 655 + (4.35 * currentWeight) + (4.7 * height) - (4.7 * age)
-                    var maintenanceCalories = bmr * enumValueOf<ActivityLevel>(activityLevel).value
+                    val bmr = 655 + (4.35 * mUser.currentWeight) + (4.7 * mUser.height) - (4.7 * mUser.age)
+                    var maintenanceCalories = bmr * enumValueOf<ActivityLevel>(mUser.activityLevel).value
 
-                    if(goalWeight < currentWeight){
+                    if(mUser.goalWeight < mUser.currentWeight){
                         // Weight Loss
                         goalCalories = maintenanceCalories - 100
-                    } else if (goalWeight > currentWeight) {
+                    } else if (mUser.goalWeight > mUser.currentWeight) {
                         // Weight Gain
                         goalCalories = maintenanceCalories + 100
                     }

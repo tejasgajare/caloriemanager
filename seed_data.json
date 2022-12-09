@@ -320,11 +320,91 @@
                         "count": 1
                     }
                 ]
+            },
+            "2022-12-09": {
+                "breakfast": [
+                    {
+                        "name": "Chicken Sandwich",
+                        "unit": "Breads",
+                        "calories": 210,
+                        "fats": 6,
+                        "carbohydrates": 12,
+                        "proteins": 13,
+                        "count": 2
+                    },
+                    {
+                        "name": "Everything Bagel",
+                        "unit": "Breads",
+                        "calories": 234,
+                        "fats": 6,
+                        "carbohydrates": 13,
+                        "proteins": 12,
+                        "count": 1
+                    },
+                    {
+                        "name": "Mango Smoothie",
+                        "unit": "Glass",
+                        "calories": 123,
+                        "fats": 6,
+                        "carbohydrates": 17,
+                        "proteins": 15,
+                        "count": 1
+                    }
+                ],
+                "lunch": [
+                    {
+                        "name": "Scrambled Eggs",
+                        "unit": "Eggs",
+                        "calories": 132,
+                        "fats": 6,
+                        "carbohydrates": 14,
+                        "proteins": 19,
+                        "count": 2
+                    },
+                    {
+                        "name": "Caesar Salad",
+                        "unit": "Bowl",
+                        "calories": 223,
+                        "fats": 6,
+                        "carbohydrates": 14,
+                        "proteins": 16,
+                        "count": 1
+                    },
+                    {
+                        "name": "Avocado Toast",
+                        "unit": "Breads",
+                        "calories": 193,
+                        "fats": 6,
+                        "carbohydrates": 18,
+                        "proteins": 15,
+                        "count": 2
+                    }
+                ],
+                "dinner": [
+                    {
+                        "name": "Veggie Burger",
+                        "unit": "Breads",
+                        "calories": 123,
+                        "fats": 6,
+                        "carbohydrates": 14,
+                        "proteins": 18,
+                        "count": 1
+                    },
+                    {
+                        "name": "Tuna Salad",
+                        "unit": "Bowl",
+                        "calories": 212,
+                        "fats": 6,
+                        "carbohydrates": 17,
+                        "proteins": 15,
+                        "count": 1
+                    }
+                ]
             }
         }
     },
     "users": {
-        "zO69BhHjHPXfKvjpzLogYTNNnHE3" : {
+        "NwvGzRZsa0M6GuREZX1dDl2AjOg1" : {
             "firstName": "Tejas",
             "lastName": "Gajare",
             "age": 25,
