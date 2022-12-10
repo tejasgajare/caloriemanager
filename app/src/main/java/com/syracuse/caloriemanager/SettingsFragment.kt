@@ -1,59 +1,99 @@
 package com.syracuse.caloriemanager
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.Editable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.EditText
+import androidx.core.text.set
+import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
+import com.syracuse.caloriemanager.databinding.FragmentSettingsBinding
+import com.syracuse.caloriemanager.models.ActivityLevel
+import com.syracuse.caloriemanager.models.User
+import java.text.SimpleDateFormat
+import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SettingsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SettingsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding get() = _binding!!
+
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firebaseDatabase: FirebaseDatabase
+    private lateinit var fUser: FirebaseUser
+    private lateinit var mUser: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+        firebaseAuth = FirebaseAuth.getInstance()
+        firebaseDatabase = FirebaseDatabase.getInstance()
+        fUser = firebaseAuth.currentUser!!
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_settings, container, false)
+    ): View {
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val activityLevels: MutableList<String> = ArrayList()
+        for (activityLevel in ActivityLevel.values()) {
+            activityLevels.add(activityLevel.description)
+        }
+        val adapter = ArrayAdapter(requireContext(), R.layout.dropdown_list_item, ActivityLevel.values())
+        binding.activityLevel.setAdapter(adapter)
+        binding.activityLevel.setOnItemClickListener { parent, view, position, id ->
+            val item = parent.getItemAtPosition(position).toString()
+            Log.wtf(TAG, "Selected activity level is ${item}")
+        }
+
+        firebaseDatabase.reference.child("users").child(fUser.uid).get()
+            .addOnSuccessListener { snapshot ->
+                mUser = snapshot.getValue(User::class.java)!!
+                if(mUser.isOnBoarded){
+                    binding.height.setText(mUser.height.toInt().toString())
+                    binding.height.setText(mUser.height.toString())
+                    binding.goalWeight.setText(mUser.goalWeight.toString())
+                    binding.currentWeight.setText(mUser.currentWeight.toString())
+                    binding.age.setText(mUser.age.toString())
+                }
+            }.addOnFailureListener{
+                Log.e("firebase", "Error getting data", it)
+            }
+
+
+        binding.save.setOnClickListener{
+            try {
+                mUser.height = binding.height.text.toString().toDouble()
+                mUser.currentWeight = binding.currentWeight.text.toString().toDouble()
+                mUser.goalWeight = binding.goalWeight.text.toString().toDouble()
+                mUser.age = binding.age.text.toString().toDouble()
+
+                mUser.isOnBoarded = mUser.height > 0 && mUser.currentWeight > 0 && mUser.goalWeight > 0 && mUser.age > 0
+
+            } catch (error: Exception){
+                Snackbar.make(binding.root, "Please check the values", Snackbar.LENGTH_SHORT).show()
+            }
+
+            Log.wtf(TAG, "Setting data for user ${fUser.uid}, mUser = ${mUser.toString()}")
+            firebaseDatabase.reference.child("users").child(fUser.uid).setValue(mUser)
+            Snackbar.make(binding.root, "We have updated your settings", Snackbar.LENGTH_SHORT).show()
+
+        }
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SettingsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SettingsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        @JvmStatic val TAG = "SettingsFragment"
     }
 }

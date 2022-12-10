@@ -7,14 +7,16 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
-import com.syracuse.caloriemanager.databinding.FragmentLoginBinding
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
 import com.syracuse.caloriemanager.databinding.FragmentRegisterBinding
+import com.syracuse.caloriemanager.models.Dairy
+import com.syracuse.caloriemanager.models.User
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -23,7 +25,8 @@ class RegisterFragment : Fragment() {
 
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
-    private lateinit var mAuth: FirebaseAuth
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var firebaseDatabase: FirebaseDatabase
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +34,8 @@ class RegisterFragment : Fragment() {
     ): View? {
         Log.v(TAG, "Register Fragment Loaded")
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
-        mAuth = FirebaseAuth.getInstance()
+        firebaseAuth = FirebaseAuth.getInstance()
+        firebaseDatabase = FirebaseDatabase.getInstance()
         return binding.root
     }
 
@@ -44,13 +48,17 @@ class RegisterFragment : Fragment() {
             val lastname = binding.editLastname.text.toString()
             val email = binding.editEmail.text.toString()
             val password = binding.editPassword.text.toString()
-            val confirmPassword = binding.editConfirmPassword.text.toString()
 
             try {
-                mAuth.createUserWithEmailAndPassword(email, password)
+                firebaseAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(requireActivity()) { task ->
                         if (task.isSuccessful) {
                             Log.v(TAG, "Successfully Registered")
+                            Log.wtf(TAG, "Create a user record with isOnBoarder = false")
+                            val uid = firebaseAuth.currentUser?.uid
+                            val user = User(firstname, lastname)
+                            firebaseDatabase.reference.child("users").child(uid.toString()).setValue(user)
+                            firebaseDatabase.reference.child("meals").child(uid.toString()).setValue("initial")
                             val trackingActivity = Intent(activity, TrackingActivity::class.java)
                             startActivity(trackingActivity)
                             activity?.finish()

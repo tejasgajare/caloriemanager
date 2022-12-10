@@ -11,7 +11,7 @@ import com.syracuse.caloriemanager.DiaryFragment
 import com.syracuse.caloriemanager.databinding.MealItemBinding
 import com.syracuse.caloriemanager.models.MealItem
 
-class MealAdapter(var modelClass: Class<MealItem>, var query: Query) :
+class MealAdapter(var modelClass: Class<MealItem>, var query: Query, var MEAL_TYPE: String) :
     FirebaseRecyclerAdapter<MealItem, MealAdapter.MealViewHolder>(
         FirebaseRecyclerOptions.Builder<MealItem>()
             .setQuery(query, modelClass)
@@ -22,7 +22,7 @@ class MealAdapter(var modelClass: Class<MealItem>, var query: Query) :
     private var isRemoveActive: Boolean = false
 
     interface ItemClickListener {
-        fun onMealItemRemove(view: View)
+        fun onMealItemRemove(view: View, position: Int, mealType: String)
     }
 
     fun setItemClickListener (listener: DiaryFragment){
@@ -36,7 +36,7 @@ class MealAdapter(var modelClass: Class<MealItem>, var query: Query) :
 
     override fun onBindViewHolder(holder: MealViewHolder, position: Int, model: MealItem) {
         holder.binding.name.text = model.name
-        holder.binding.unit.text = "${model.count} ${model.unit}"
+        holder.binding.unit.text = "${model.unit}"
         holder.binding.calories.text = model.calories.toString()
 
         if(isRemoveActive){
@@ -58,7 +58,7 @@ class MealAdapter(var modelClass: Class<MealItem>, var query: Query) :
     inner class MealViewHolder(val binding: MealItemBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.removeMealItem.setOnClickListener{view ->
-                listener?.onMealItemRemove(view)
+                listener?.onMealItemRemove(view, bindingAdapterPosition, MEAL_TYPE)
             }
         }
     }

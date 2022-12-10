@@ -8,15 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.auth.MultiFactor
+import com.google.firebase.database.*
 import com.syracuse.caloriemanager.databinding.FragmentDashboardBinding
 import com.syracuse.caloriemanager.models.ActivityLevel
+import com.syracuse.caloriemanager.models.Dairy
+import com.syracuse.caloriemanager.models.MealItem
 import com.syracuse.caloriemanager.models.User
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class DashboardFragment : Fragment() {
@@ -62,23 +63,19 @@ class DashboardFragment : Fragment() {
         setConsumedValues()
     }
 
-
     private fun setGoalValues() {
         firebaseDatabase.reference
             .child("users")
             .child(fUser.uid)
             .addValueEventListener(object: ValueEventListener{
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    var mUser = User()
-
-                    try {
-                        mUser = snapshot.getValue(User::class.java)!!
-                    } catch (error: NullPointerException) {
-                        Log.wtf(TAG,"User has not completed On-boarding, redirecting to settings page ")
+                    val mUser = snapshot.getValue(User::class.java)!!
+                    if (!mUser.isOnBoarded){
+                        Log.wtf(TAG, " User has not completed On Boarding, please redirect to settings page")
                     }
 
                     val bmr = 655 + (4.35 * mUser.currentWeight) + (4.7 * mUser.height) - (4.7 * mUser.age)
-                    var maintenanceCalories = bmr * enumValueOf<ActivityLevel>(mUser.activityLevel).value
+                    val maintenanceCalories = bmr * enumValueOf<ActivityLevel>(mUser.activityLevel).value
 
                     if(mUser.goalWeight < mUser.currentWeight){
                         // Weight Loss
@@ -99,6 +96,8 @@ class DashboardFragment : Fragment() {
                     binding.consumedFats.max = goalFats.toInt()
                     binding.consumedCarbohydrates.max = goalCarbohydrates.toInt()
                     binding.consumedProteins.max = goalProteins.toInt()
+
+                    setProgressValues()
                 }
 
                 override fun onCancelled(error: DatabaseError) {}
@@ -117,70 +116,62 @@ class DashboardFragment : Fragment() {
         mealsQuery
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    var tCalories = 0.0
-                    var tFats = 0.0
-                    var tCarbohydrates = 0.0
-                    var tProteins = 0.0
-                    val breakfast = dataSnapshot.child("breakfast")
-                    val lunch = dataSnapshot.child("lunch")
-                    val dinner = dataSnapshot.child("dinner")
-
-                    for (data in breakfast.children) {
-                        val calories: Long = data.child("calories").getValue(Long::class.java)!!
-                        val fats: Long = data.child("fats").getValue(Long::class.java)!!
-                        val carbohydrates: Long = data.child("carbohydrates").getValue(Long::class.java)!!
-                        val proteins: Long = data.child("proteins").getValue(Long::class.java)!!
-                        tCalories += calories
-                        tFats += fats
-                        tCarbohydrates += carbohydrates
-                        tProteins += proteins
+                    var dairyTotal = MealItem()
+                    try {
+                        val mUserDairy = Dairy()
+                        val breakFastItems: ArrayList<MealItem> = arrayListOf()
+                        for (postSnapshot in dataSnapshot.child("breakfast").children) {
+                            val meal = postSnapshot.getValue(MealItem::class.java)
+                            breakFastItems.add(meal!!)
+                        }
+                        mUserDairy.breakfast = breakFastItems
+                        val lunchItems: ArrayList<MealItem> = arrayListOf()
+                        for (postSnapshot in dataSnapshot.child("lunch").children) {
+                            val meal = postSnapshot.getValue(MealItem::class.java)
+                            lunchItems.add(meal!!)
+                        }
+                        mUserDairy.lunch = lunchItems
+                        val dinnerItems: ArrayList<MealItem> = arrayListOf()
+                        for (postSnapshot in dataSnapshot.child("dinner").children) {
+                            val meal = postSnapshot.getValue(MealItem::class.java)
+                            dinnerItems.add(meal!!)
+                        }
+                        mUserDairy.dinner = dinnerItems
+                        dairyTotal = mUserDairy.getDairyTotal()
+                    } catch (error: NullPointerException) {
+                        Log.wtf(TAG, "SILENT FAIL - No meal record found")
+                    }
+                    catch (error: DatabaseException) {
+                        Log.wtf(TAG, "SILENT FAIL - No meal record found")
                     }
 
-                    for (data in lunch.children) {
-                        val calories: Long = data.child("calories").getValue(Long::class.java)!!
-                        val fats: Long = data.child("fats").getValue(Long::class.java)!!
-                        val carbohydrates: Long = data.child("carbohydrates").getValue(Long::class.java)!!
-                        val proteins: Long = data.child("proteins").getValue(Long::class.java)!!
-                        tCalories += calories
-                        tFats += fats
-                        tCarbohydrates += carbohydrates
-                        tProteins += proteins
-                    }
+                    consumedCalories = dairyTotal.calories.toDouble()
+                    consumedFats = dairyTotal.fats.toDouble()
+                    consumedCarbohydrates = dairyTotal.carbohydrates.toDouble()
+                    consumedProteins = dairyTotal.proteins.toDouble()
 
-                    for (data in dinner.children) {
-                        val calories: Long = data.child("calories").getValue(Long::class.java)!!
-                        val fats: Long = data.child("fats").getValue(Long::class.java)!!
-                        val carbohydrates: Long = data.child("carbohydrates").getValue(Long::class.java)!!
-                        val proteins: Long = data.child("proteins").getValue(Long::class.java)!!
-                        tCalories += calories
-                        tFats += fats
-                        tCarbohydrates += carbohydrates
-                        tProteins += proteins
-                    }
-                    // Setting Total Consumed Values for the Day
-                    consumedCalories = tCalories
-                    consumedFats = tFats
-                    consumedCarbohydrates = tCarbohydrates
-                    consumedProteins = tProteins
-
-                    // Set the text values on Dashboard UI
-                    binding.todayCalories.text = consumedCalories.toInt().toString()
-                    binding.todayFats.text = consumedFats.toInt().toString() + "⧸" + goalFats.toInt().toString() + " Left"
-                    binding.todayCarbohydrates.text = consumedCarbohydrates.toInt().toString() + "⧸" + goalCarbohydrates.toInt().toString() + " Left"
-                    binding.todayProtein.text = consumedProteins.toInt().toString() + "⧸" + goalProteins.toInt().toString() + " Left"
-
-                    // Set the progress bar's progress
-                    binding.consumedCalories.progress = consumedCalories.toInt()
-                    binding.consumedFats.progress = consumedFats.toInt()
-                    binding.consumedCarbohydrates.progress = consumedCarbohydrates.toInt()
-                    binding.consumedProteins.progress = consumedProteins.toInt()
-
-                    // Set progress bar inner text
-                    binding.remainingCalories.text = (goalCalories.toInt() - consumedCalories.toInt()).toString()
+                    setProgressValues()
                 }
 
                 override fun onCancelled(error: DatabaseError) {}
             })
+    }
+
+    private fun setProgressValues(){
+        // Set the text values on Dashboard UI
+        binding.todayCalories.text = consumedCalories.toInt().toString()
+        binding.todayFats.text = consumedFats.toInt().toString() + "⧸" + goalFats.toInt().toString() + " Left"
+        binding.todayCarbohydrates.text = consumedCarbohydrates.toInt().toString() + "⧸" + goalCarbohydrates.toInt().toString() + " Left"
+        binding.todayProtein.text = consumedProteins.toInt().toString() + "⧸" + goalProteins.toInt().toString() + " Left"
+
+        // Set the progress bar's progress
+        binding.consumedCalories.progress = consumedCalories.toInt()
+        binding.consumedFats.progress = consumedFats.toInt()
+        binding.consumedCarbohydrates.progress = consumedCarbohydrates.toInt()
+        binding.consumedProteins.progress = consumedProteins.toInt()
+
+        // Set progress bar inner text
+        binding.remainingCalories.text = (goalCalories.toInt() - consumedCalories.toInt()).toString()
     }
 
     companion object {

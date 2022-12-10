@@ -5,11 +5,11 @@ import java.io.Serializable
 
 @JsonIgnoreProperties("selection")
 class MealItem: Serializable {
-    val name: String = ""
-    val unit: String = ""
-    val count: Int = 0
-    val calories: Int = 0
-    val proteins: Int = 0
-    val fats: Int = 0
-    val carbohydrates: Int = 0
+    var name: String = ""
+    var unit: String = ""
+    var count: Int = 0
+    var calories: Int = 0
+    var proteins: Int = 0
+    var fats: Int = 0
+    var carbohydrates: Int = 0
 }

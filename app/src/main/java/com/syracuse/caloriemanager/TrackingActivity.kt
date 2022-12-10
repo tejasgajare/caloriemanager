@@ -5,16 +5,18 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentTransaction
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.syracuse.caloriemanager.databinding.ActivityTrackingBinding
 import com.syracuse.caloriemanager.models.User
+
 
 class TrackingActivity : AppCompatActivity()  {
     lateinit var binding: ActivityTrackingBinding
@@ -26,8 +28,6 @@ class TrackingActivity : AppCompatActivity()  {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         binding = ActivityTrackingBinding.inflate(layoutInflater)
-
-
 
         firebaseAuth = FirebaseAuth.getInstance()
         firebaseDatabase = FirebaseDatabase.getInstance().reference
@@ -61,7 +61,7 @@ class TrackingActivity : AppCompatActivity()  {
                     val fragment = NewsFeedFragment()
                     binding.title.text = getString(R.string.title_newsfeed)
                     val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-                    transaction.replace(binding.fragmentHost.id, fragment, FRAGMENT_DIARY)
+                    transaction.replace(binding.fragmentHost.id, fragment, FRAGMENT_NEWSFEED)
                     transaction.commit()
                     return@setOnItemSelectedListener true
                 }
@@ -69,7 +69,7 @@ class TrackingActivity : AppCompatActivity()  {
                     val fragment = SettingsFragment()
                     binding.title.text = getString(R.string.title_settings)
                     val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-                    transaction.replace(binding.fragmentHost.id, fragment, FRAGMENT_DIARY)
+                    transaction.replace(binding.fragmentHost.id, fragment, FRAGMENT_SETTINGS)
                     transaction.commit()
                     return@setOnItemSelectedListener true
                 }
@@ -79,27 +79,36 @@ class TrackingActivity : AppCompatActivity()  {
     }
 
     private fun onboardUser() {
-        Log.wtf("firebase", "Reading data for user ${fUser.uid}")
-        var mUser = User()
+        var mUser: User
         firebaseDatabase.child("users").child(fUser.uid).get()
             .addOnSuccessListener { snapshot->
                 try {
                     mUser = snapshot.getValue(User::class.java)!!
+                    if(!mUser.isOnBoarded){
+                        MaterialAlertDialogBuilder(this)
+                            .setTitle("Healthy habits start here")
+                            .setMessage("We would like to know a little bit more about you to help you reach your goals. Please fill out the details to get started.")
+                            .setIcon(R.drawable.ic_baseline_flag_24)
+                            .setPositiveButton("Ok", null)
+                            .show()
+
+                        val fragment = SettingsFragment()
+                        binding.title.text = getString(R.string.title_settings)
+                        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+                        transaction.replace(binding.fragmentHost.id, fragment, FRAGMENT_SETTINGS)
+                        transaction.commit()
+                        binding.bottomNavigation.selectedItemId = R.id.page_settings
+                    }
                 } catch (error: NullPointerException) {
-                    Log.wtf(DashboardFragment.TAG,"User has not completed On-boarding, redirecting to settings page ")
-                    Snackbar.make(binding.root, "Please Go to Settings page to complete On Boarding", Snackbar.LENGTH_SHORT).show()
+                    Log.wtf(TAG, "Could not get user data fom firebase.")
                 }
-                Log.wtf(TAG, "Got value ${snapshot.value}")
             }.addOnFailureListener{
                 Log.wtf(TAG,"Could Not Found the user in database")
-            }.addOnCompleteListener {
-                Log.wtf(TAG,"Completed: Could Not Found the user in database")
-                if (!mUser.isOnBoarded){
-
-                }
-            }.addOnCanceledListener {
-                Log.wtf(TAG,"Cancelled: Could Not Found the user in database")
+            }.addOnCompleteListener{
+                binding.progressBar.visibility = View.GONE
+                binding.progressLayout.visibility = View.GONE
             }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

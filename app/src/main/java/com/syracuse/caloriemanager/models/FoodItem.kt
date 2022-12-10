@@ -5,5 +5,6 @@ data class FoodItem (
     val unit: String,
     val calories: Int,
     val fats: Int,
+    val proteins: Int,
     val carbohydrates: Int
 )

@@ -66,9 +66,13 @@ class DiaryFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickLis
 
         Log.wtf(DashboardFragment.TAG, "Loading diary data for date $todayDate")
 
-        initBreakfastAdapter()
-        initLunchAdapter()
-        initDinnerAdapter()
+        try {
+            initBreakfastAdapter()
+            initLunchAdapter()
+            initDinnerAdapter()
+        } catch (error: java.lang.NullPointerException){
+            Log.wtf(TAG, "SILENT FAIL -  Cannot fetch dairy")
+        }
 
         mMealBreakfastAdapter.setItemClickListener(this)
         mMealLunchAdapter.setItemClickListener(this)
@@ -153,7 +157,7 @@ class DiaryFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickLis
         }
     }
 
-    override fun onMealItemRemove(view: View) {
+    override fun onMealItemRemove(view: View, position: Int, mealType: String) {
         Log.e(MealAdapter.TAG, "Item Removed")
         view.visibility = View.GONE
         binding.removeItemBreakfast.text = "Remove"
@@ -163,6 +167,14 @@ class DiaryFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickLis
         mMealBreakfastAdapter.setRemoveState(false)
         mMealLunchAdapter.setRemoveState(false)
         mMealDinnerAdapter.setRemoveState(false)
+
+        if (mealType == "breakfast"){
+            mMealBreakfastAdapter.getRef(position).removeValue()
+        } else if (mealType == "lunch") {
+            mMealLunchAdapter.getRef(position).removeValue()
+        } else if (mealType == "dinner") {
+            mMealDinnerAdapter.getRef(position).removeValue()
+        }
     }
 
     private fun initBreakfastAdapter(){
@@ -200,7 +212,7 @@ class DiaryFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickLis
                 override fun onCancelled(error: DatabaseError) {}
             })
 
-        mMealBreakfastAdapter = MealAdapter(MealItem::class.java, breakfastMealsQuery)
+        mMealBreakfastAdapter = MealAdapter(MealItem::class.java, breakfastMealsQuery,"breakfast")
     }
 
     private fun initLunchAdapter(){
@@ -237,7 +249,7 @@ class DiaryFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickLis
                 override fun onCancelled(error: DatabaseError) {}
             })
 
-        mMealLunchAdapter = MealAdapter(MealItem::class.java, lunchMealsQuery)
+        mMealLunchAdapter = MealAdapter(MealItem::class.java, lunchMealsQuery, "lunch")
     }
     private fun initDinnerAdapter(){
         val dinnerMealsQuery = FirebaseDatabase.getInstance()
@@ -274,7 +286,7 @@ class DiaryFragment : Fragment(), View.OnClickListener, MealAdapter.ItemClickLis
                 override fun onCancelled(error: DatabaseError) {}
             })
 
-        mMealDinnerAdapter = MealAdapter(MealItem::class.java, dinnerMealsQuery)
+        mMealDinnerAdapter = MealAdapter(MealItem::class.java, dinnerMealsQuery, "dinner")
     }
 
     companion object {

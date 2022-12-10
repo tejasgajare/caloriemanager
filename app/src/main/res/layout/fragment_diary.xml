@@ -84,11 +84,10 @@
 
                     </LinearLayout>
 
-                    <View
+                    <com.google.android.material.divider.MaterialDivider
                         android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_marginVertical="8dp"
-                        android:background="?android:attr/listDivider" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="8dp"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/breakfast_meals"
@@ -177,11 +176,10 @@
 
                     </LinearLayout>
 
-                    <View
+                    <com.google.android.material.divider.MaterialDivider
                         android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_marginVertical="8dp"
-                        android:background="?android:attr/listDivider" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="8dp"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/lunch_meals"
@@ -271,12 +269,10 @@
 
                     </LinearLayout>
 
-                    <View
-                        android:id="@+id/divider"
+                    <com.google.android.material.divider.MaterialDivider
                         android:layout_width="match_parent"
-                        android:layout_height="2dp"
-                        android:layout_marginVertical="8dp"
-                        android:background="?android:attr/listDivider" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="8dp"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/dinner_meals"
