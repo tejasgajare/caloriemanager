@@ -69,7 +69,6 @@ class YouTubeFragment : YouTubePlayerSupportFragmentX() {
                 }
             }
 
-
             override fun onInitializationFailure(
                 provider: YouTubePlayer.Provider,
                 youTubeInitializationResult: YouTubeInitializationResult
