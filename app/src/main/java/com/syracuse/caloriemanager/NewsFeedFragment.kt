@@ -34,7 +34,19 @@ class NewsFeedFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_news_feed, container, false)
+        val view = inflater.inflate(R.layout.fragment_news_feed, container, false)
+        val fragmentManager = parentFragment?.childFragmentManager
+
+// Use FragmentTransaction to add the child fragment to the parent fragment
+        val fragmentTransaction = fragmentManager?.beginTransaction()
+        val frag =YouTubeFragment()
+        if (fragmentTransaction != null) {
+            fragmentTransaction.add(R.id.container_for_child_fragment, frag)
+        }
+        if (fragmentTransaction != null) {
+            fragmentTransaction.commit()
+        }
+        return view
     }
 
     companion object {
