@@ -17,3 +17,11 @@ With our extensive food database of 10,000+ food and beverage items, it's easy t
 
 ### Newsfeed
 Find fitness-related blogs and videos on our newsfeed feature to provide you with additional resources and inspiration to help you achieve your goals.
+
+### Screenshots
+
+<p float="left">
+  <img src="./screenshots/DASHBOARD.png" width="200" /> 
+  <img src="./screenshots/DAIRY.png" width="200" />
+  <img src="./screenshots/NEWSFEED.png" width="197" />
+</p>
